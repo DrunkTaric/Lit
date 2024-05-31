@@ -1,4 +1,5 @@
 const std = @import("std");
+const fs = std.fs.cwd();
 
 const CommandTypes = union(enum) {
     help,
