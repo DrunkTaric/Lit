@@ -43,4 +43,8 @@ pub fn main() !void {
     // Skipping the first arg
     _ = argsIterator.next();
 
+    if (argsIterator.next()) |command| {
+    } else {
+        return std.log.err("please put a command example: lit [command] [other]", .{});
+    }
 }
