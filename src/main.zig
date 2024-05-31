@@ -40,10 +40,22 @@ pub fn main() !void {
 
     var argsIterator = try std.process.ArgIterator.initWithAllocator(allocator);
     defer argsIterator.deinit();
+
     // Skipping the first arg
     _ = argsIterator.next();
 
     if (argsIterator.next()) |command| {
+        switch (CommandTypes.keyword(command)) {
+            .init => @import("./commands/init.zig").init() catch |err| switch (err) {
+                error.PathAlreadyExists => std.log.err("Project already initialized", .{}),
+                else => std.log.err("{?}", .{err}),
+            },
+            .deinit => @import("./commands/deinit.zig").init() catch |err| switch (err) {
+                else => std.log.err("{?}", .{err}),
+            },
+            .cat_file => @import("./commands/cat-file.zig").init(argsIterator, allocator),
+            else => std.log.err("Command not found", .{}),
+        }
     } else {
         return std.log.err("please put a command example: lit [command] [other]", .{});
     }
