@@ -1,8 +1,8 @@
 const std = @import("std");
 
 const Entry = struct {
-    K: ?[:0]const u8,
-    V: ?[:0]const u8,
+    K: ?[]const u8,
+    V: ?[]const u8,
     next: ?*Entry,
 };
 
