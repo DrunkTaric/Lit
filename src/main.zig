@@ -53,7 +53,9 @@ pub fn main() !void {
             .deinit => @import("./commands/deinit.zig").init() catch |err| switch (err) {
                 else => std.log.err("{?}", .{err}),
             },
-            .cat_file => @import("./commands/cat-file.zig").init(argsIterator, allocator),
+            .cat_file => @import("./commands/cat-file.zig").init(argsIterator, allocator) catch |err| switch (err) {
+                else => std.log.err("{?}", .{err}),
+            },
             else => std.log.err("Command not found", .{}),
         }
     } else {
