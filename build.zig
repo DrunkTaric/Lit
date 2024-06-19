@@ -21,6 +21,12 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    const string = b.dependency("string", .{
+        .target = target,
+        .optimize = optimize,
+    });
+    exe.root_module.addImport("string", string.module("string"));
+
     b.installArtifact(exe);
 
     const run_cmd = b.addRunArtifact(exe);
