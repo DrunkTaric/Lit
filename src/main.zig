@@ -14,7 +14,7 @@ const CommandTypes = union(enum) {
     cat_file,
 
     fn keyword(word: [:0]const u8) CommandTypes {
-        const map = std.ComptimeStringMap(CommandTypes, .{
+        const map = std.StaticStringMap(CommandTypes).initComptime(.{
             .{ "help", .help },
             .{ "push", .push },
             .{ "pull", .pull },
