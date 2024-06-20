@@ -12,6 +12,7 @@ const CommandTypes = union(enum) {
     branch,
     checkout,
     cat_file,
+    hash_object,
 
     fn keyword(word: [:0]const u8) CommandTypes {
         const map = std.StaticStringMap(CommandTypes).initComptime(.{
@@ -25,6 +26,7 @@ const CommandTypes = union(enum) {
             .{ "branch", .branch },
             .{ "checkout", .checkout },
             .{ "cat-file", .cat_file },
+            .{ "hash-object", .hash_object },
         });
 
         if (map.get(word)) |command| {
@@ -54,6 +56,9 @@ pub fn main() !void {
                 else => std.log.err("{?}", .{err}),
             },
             .cat_file => @import("./commands/cat-file.zig").init(argsIterator, allocator) catch |err| switch (err) {
+                else => std.log.err("{?}", .{err}),
+            },
+            .hash_object => @import("./commands/hash-object.zig").init(argsIterator, allocator) catch |err| switch (err) {
                 else => std.log.err("{?}", .{err}),
             },
             else => std.log.err("Command not found", .{}),
