@@ -1,8 +1,8 @@
 const std = @import("std");
 const fs = std.fs.cwd();
 const zlib = std.compress.zlib;
-const Option = @import("../utils/option.zig").Option;
 const String = @import("string").String;
+const Option = @import("../utils/option.zig").Option;
 
 pub fn init(argIter: std.process.ArgIterator, alloc: std.mem.Allocator) !void {
     var arena = std.heap.ArenaAllocator.init(alloc);
