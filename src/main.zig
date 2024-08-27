@@ -10,9 +10,17 @@ const CommandTypes = union(enum) {
     fetch,
     deinit,
     branch,
+    ls_tree,
     checkout,
     cat_file,
     hash_object,
+
+    fn help(command: CommandTypes) void { // WIP
+        switch (command) {
+            .cat_file => std.debug.print("Command: {s}\t{s}", "used to "),
+            else => std.debug.print("Help!", .{}),
+        }
+    }
 
     fn keyword(word: [:0]const u8) CommandTypes {
         const map = std.StaticStringMap(CommandTypes).initComptime(.{
@@ -24,6 +32,7 @@ const CommandTypes = union(enum) {
             .{ "fetch", .fetch },
             .{ "deinit", .deinit },
             .{ "branch", .branch },
+            .{ "ls_tree", .ls_tree },
             .{ "checkout", .checkout },
             .{ "cat-file", .cat_file },
             .{ "hash-object", .hash_object },
@@ -61,7 +70,10 @@ pub fn main() !void {
             .hash_object => @import("./commands/hash-object.zig").init(argsIterator, allocator) catch |err| switch (err) {
                 else => std.log.err("{?}", .{err}),
             },
-            else => std.log.err("Command not found", .{}),
+            .ls_tree => @import("./commands/ls-tree.zig").init(argsIterator, allocator) catch |err| switch (err) {
+                else => std.log.err("{?}", .{err}),
+            },
+            else => std.debug.print("Help me\n", .{}),
         }
     } else {
         return std.log.err("please put a command example: lit [command] [other]", .{});
